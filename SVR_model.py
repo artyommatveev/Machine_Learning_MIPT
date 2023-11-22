@@ -28,9 +28,9 @@ def _explore_recursive(parent_name, element):
             mlflow.log_param(f'{parent_name}.{i}', v)
 
 
-SVR_config_path = "/content/Machine_Learning_MIPT/config.yaml"
+SVR_config_path = "/content/Machine_Learning_MIPT"
 
-@hydra.main(config_path=SVR_config_path)
+@hydra.main(config_path=SVR_config_path, config_name="config")
 def main(cfg):
     model = SVR(kernel=cfg.model.kernel, degree=cfg.model.degree, 
         gamma=cfg.model.gamma, C=cfg.model.C, epsilon=cfg.model.epsilon)
