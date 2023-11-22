@@ -42,14 +42,15 @@ def main(cfg):
     with mlflow.start_run():
         log_params_from_omegaconf_dict(cfg)
 
-        model.fit(X_train_array, y_train_array)
-        pred = model.predict(X_test_array)
-        mlflow.log_metrics(get_metrics(real=y_test_array, pred=pred))
+        model.fit(X_train, y_train)
+        pred = model.predict(X_test)
+        mlflow.log_metrics(get_metrics(real=y_test, pred=pred))
 
     get_ipython().system_raw("mlflow ui --port 5000 &")
     # Terminate open tunnels if exist.
     ngrok.kill()
 
+    # My personal authtoken to open MLflow web page.
     NGROK_AUTH_TOKEN = "2YXCDq9gfZ1TqYNfes8aXEG0f8W_UWis1E3SUQ74wF9t1Pyk"
     ngrok.set_auth_token(NGROK_AUTH_TOKEN)
 
