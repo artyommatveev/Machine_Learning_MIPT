@@ -7,6 +7,8 @@ from omegaconf import DictConfig, ListConfig
 import mlflow
 from pyngrok import ngrok
 
+from data_preparation import get_metrics
+
 import random
 random.seed(42)
 np.random.seed(42)
