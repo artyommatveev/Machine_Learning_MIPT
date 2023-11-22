@@ -1,6 +1,6 @@
 model:
-  kernel: "rbf"
+  kernel: rbf
   degree: 3
-  gamma: "scale"
+  gamma: scale
   C: 1.0
   epsilon: 0.1
