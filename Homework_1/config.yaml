@@ -1,3 +1,10 @@
+model:
+  kernel: rbf
+  degree: 3
+  gamma: scale
+  C: 1.0
+  epsilon: 0.1
+
 hydra:
   sweeper:
     params:
