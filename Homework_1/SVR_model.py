@@ -29,10 +29,10 @@ def _explore_recursive(parent_name, element):
 
 
 SVR_config_path = "./Homework_1"
-X_train = np.load("./data/X_train_data.npy", allow_pickle=True)
-X_test = np.load("./data/X_test_data.npy", allow_pickle=True)
-y_train = np.load("./data/y_train_data.npy", allow_pickle=True)
-y_test = np.load("./data/y_test_data.npy", allow_pickle=True)
+X_train = np.load("Homework_1/data/X_train_data.npy", allow_pickle=True)
+X_test = np.load("Homework_1/data/X_test_data.npy", allow_pickle=True)
+y_train = np.load("Homework_1/data/y_train_data.npy", allow_pickle=True)
+y_test = np.load("Homework_1/data/y_test_data.npy", allow_pickle=True)
 
 @hydra.main(config_name="config")
 def main(cfg):
