@@ -1,35 +1,10 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-from scipy import stats
-import seaborn as sns
-
-from sklearn.ensemble import ExtraTreesRegressor
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from sklearn.model_selection import (train_test_split, GridSearchCV,
-                                     LeaveOneOut,
-                                     KFold, ParameterGrid)
-from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVR
-
-import skfda
-from skfda.misc.hat_matrix import NadarayaWatsonHatMatrix
-from skfda.ml.regression._kernel_regression import KernelRegression
-
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import Dataset, DataLoader
-
-# from torchvision import datasets
-# from torchvision import transforms
-
-from tqdm.notebook import tqdm
 
 import hydra
 from omegaconf import DictConfig, ListConfig
 
 import mlflow
+from pyngrok import ngrok
 
 import random
 random.seed(42)
@@ -52,14 +27,13 @@ def _explore_recursive(parent_name, element):
         for i, v in enumerate(element):
             mlflow.log_param(f'{parent_name}.{i}', v)
 
+
 SVR_config_path = "/content/Machine_Learning_MIPT/config.yaml"
 
 @hydra.main(config_path=SVR_config_path)
-def SVR_model(cfg):
-    model = SVR(degree=cfg.model.degree, C=cfg.model.C, epsilon=cfg.model.epsilon)
-    
-    mlflow.set_tracking_uri('file://' + hydra.utils.get_original_cwd() + '/mlruns')
-    mlflow.set_experiment(cfg.mlflow.runname)
+def main(cfg):
+    model = SVR(kernel=cfg.model.kernel, degree=cfg.model.degree, 
+        gamma=cfg.model.gamma, C=cfg.model.C, epsilon=cfg.model.epsilon)
 
     with mlflow.start_run():
         log_params_from_omegaconf_dict(cfg)
@@ -67,3 +41,17 @@ def SVR_model(cfg):
         model.fit(X_train_array, y_train_array)
         pred = model.predict(X_test_array)
         mlflow.log_metrics(get_metrics(real=y_test_array, pred=pred))
+
+    get_ipython().system_raw("mlflow ui --port 5000 &")
+    # Terminate open tunnels if exist.
+    ngrok.kill()
+
+    NGROK_AUTH_TOKEN = "2YXCDq9gfZ1TqYNfes8aXEG0f8W_UWis1E3SUQ74wF9t1Pyk"
+    ngrok.set_auth_token(NGROK_AUTH_TOKEN)
+
+    ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
+    print("MLflow Tracking UI:", ngrok_tunnel.public_url)
+
+
+if __name__ == '__main__':
+    main()
