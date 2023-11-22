@@ -28,7 +28,11 @@ def _explore_recursive(parent_name, element):
             mlflow.log_param(f'{parent_name}.{i}', v)
 
 
-SVR_config_path = "/content/Machine_Learning_MIPT"
+SVR_config_path = "./Homework_1"
+X_train = np.load("./Homework_1/X_train_data.npy")
+X_test = np.load("./Homework_1/X_test_data.npy")
+y_train = np.load("./Homework_1/y_train_data.npy")
+y_test = np.load("./Homework_1/y_test_data.npy")
 
 @hydra.main(config_path=SVR_config_path, config_name="config")
 def main(cfg):
