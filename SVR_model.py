@@ -1,3 +1,4 @@
+import numpy as np
 from sklearn.svm import SVR
 
 import hydra
@@ -9,7 +10,6 @@ from pyngrok import ngrok
 import random
 random.seed(42)
 np.random.seed(42)
-torch.manual_seed(42)
 
 
 def log_params_from_omegaconf_dict(params):
