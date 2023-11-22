@@ -1,5 +1,4 @@
 import numpy as np
-from IPython import get_ipython
 from sklearn.svm import SVR
 
 import hydra
@@ -49,7 +48,7 @@ def main(cfg):
         pred = model.predict(X_test)
         mlflow.log_metrics(get_metrics(real=y_test, pred=pred))
 
-    get_ipython().system_raw("mlflow ui --port 5000 &")
+    # get_ipython().system_raw("mlflow ui --port 5000 &")
     # Terminate open tunnels if exist.
     ngrok.kill()
 
