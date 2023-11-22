@@ -50,14 +50,14 @@ def main(cfg):
 
     # get_ipython().system_raw("mlflow ui --port 5000 &")
     # Terminate open tunnels if exist.
-    ngrok.kill()
-
+    # ngrok.kill()
+    #
     # My personal authtoken to open MLflow web page.
-    NGROK_AUTH_TOKEN = "2YXCDq9gfZ1TqYNfes8aXEG0f8W_UWis1E3SUQ74wF9t1Pyk"
-    ngrok.set_auth_token(NGROK_AUTH_TOKEN)
-
-    ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
-    print("MLflow Tracking UI:", ngrok_tunnel.public_url)
+    # NGROK_AUTH_TOKEN = "2YXCDq9gfZ1TqYNfes8aXEG0f8W_UWis1E3SUQ74wF9t1Pyk"
+    # ngrok.set_auth_token(NGROK_AUTH_TOKEN)
+    #
+    # ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
+    # print("MLflow Tracking UI:", ngrok_tunnel.public_url)
 
 
 if __name__ == '__main__':
