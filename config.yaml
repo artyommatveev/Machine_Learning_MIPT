@@ -4,3 +4,6 @@ model:
   gamma: scale
   C: 1.0
   epsilon: 0.1
+
+mlflow:
+  runname: "SVR"
