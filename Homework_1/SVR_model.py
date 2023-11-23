@@ -5,7 +5,6 @@ import hydra
 from omegaconf import DictConfig, ListConfig
 
 import mlflow
-from pyngrok import ngrok
 
 from data_preparation import get_metrics
 
@@ -31,33 +30,39 @@ def _explore_recursive(parent_name, element):
 
 
 SVR_config_path = "/content/Machine_Learning_MIPT/Homework_1"
-X_train = np.load("/content/Machine_Learning_MIPT/Homework_1/data/X_train_data.npy", allow_pickle=True)
-X_test = np.load("/content/Machine_Learning_MIPT/Homework_1/data/X_test_data.npy", allow_pickle=True)
-y_train = np.load("/content/Machine_Learning_MIPT/Homework_1/data/y_train_data.npy", allow_pickle=True)
-y_test = np.load("/content/Machine_Learning_MIPT/Homework_1/data/y_test_data.npy", allow_pickle=True)
+X_train = np.load("/content/Machine_Learning_MIPT/Homework_1/data/X_train.npy", 
+    allow_pickle=True)
+X_test = np.load("/content/Machine_Learning_MIPT/Homework_1/data/X_test.npy", 
+    allow_pickle=True)
+y_train = np.load("/content/Machine_Learning_MIPT/Homework_1/data/y_train.npy", 
+    allow_pickle=True)
+y_test = np.load("/content/Machine_Learning_MIPT/Homework_1/data/y_test.npy", 
+    allow_pickle=True)
 
-@hydra.main(config_name="config")
+mlflow.set_experiment("Support Vector Regression")
+
+@hydra.main(config_path=SVR_config_path, config_name="config")
 def main(cfg):
-    model = SVR(kernel=cfg.model.kernel, degree=cfg.model.degree,
-        gamma=cfg.model.gamma, C=cfg.model.C, epsilon=cfg.model.epsilon)
-
     with mlflow.start_run():
-        log_params_from_omegaconf_dict(cfg)
-
+        model = SVR(kernel=cfg.model.kernel, degree=cfg.model.degree,
+                    gamma=cfg.model.gamma, C=cfg.model.C,
+                    epsilon=cfg.model.epsilon)
         model.fit(X_train, y_train)
-        pred = model.predict(X_test)
-        mlflow.log_metrics(get_metrics(real=y_test, pred=pred))
 
-    # get_ipython().system_raw("mlflow ui --port 5000 &")
-    # Terminate open tunnels if exist.
-    # ngrok.kill()
-    #
-    # My personal authtoken to open MLflow web page.
-    # NGROK_AUTH_TOKEN = "2YXCDq9gfZ1TqYNfes8aXEG0f8W_UWis1E3SUQ74wF9t1Pyk"
-    # ngrok.set_auth_token(NGROK_AUTH_TOKEN)
-    #
-    # ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
-    # print("MLflow Tracking UI:", ngrok_tunnel.public_url)
+        pred = model.predict(X_test)
+        (mse, mae, r2) = get_metrics(real=y_test, pred=pred)
+
+        mlflow.log_param("kernel", cfg.model.kernel)
+        mlflow.log_param("degree", cfg.model.degree)
+        mlflow.log_param("gamma", cfg.model.gamma)
+        mlflow.log_param("C", cfg.model.C)
+        mlflow.log_param("epsilon", cfg.model.epsilon)
+
+        mlflow.log_metric("mse", mse)
+        mlflow.log_metric("mar", mae)
+        mlflow.log_metric("r2", r2)
+
+        mlflow.sklearn.log_model(model, "SVR")
 
 
 if __name__ == '__main__':
