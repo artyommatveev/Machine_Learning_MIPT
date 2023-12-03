@@ -1,5 +1,5 @@
 # Machine_Learning_MIPT
-Seminars from K. Vorontsov's Math ML course at MIPT
+Seminars from Konstantin Vorontsov's Math ML course at MIPT
 
 You can find lectures (in Russian) [here](https://bit.ly/ML-Vorontsov).
-All the seminars are adapted from A. Hraboviy's [materials](https://github.com/andriygav/MachineLearningSeminars) and translated from Russian into English by me.
+All the seminars are adapted from Andrii Hraboviy's [materials](https://github.com/andriygav/MachineLearningSeminars) and translated from Russian into English by me.
