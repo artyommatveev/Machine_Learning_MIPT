@@ -64,6 +64,5 @@ def main(cfg):
 
         mlflow.sklearn.log_model(model, "SVR")
 
-
 if __name__ == '__main__':
     main()
