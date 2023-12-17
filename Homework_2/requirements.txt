@@ -1,0 +1,8 @@
+matplotlib==3.7.1
+seaborn==0.12.2
+pandas==1.5.3
+scipy==1.11.3
+numpy==1.23.5
+catboost==1.2.2
+scikit-learn==1.2.2
+scikit-fda==0.9
