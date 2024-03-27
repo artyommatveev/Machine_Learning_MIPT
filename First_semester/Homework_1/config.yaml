@@ -1,0 +1,19 @@
+model:
+  kernel: rbf
+  degree: 3
+  gamma: scale
+  C: 1.0
+  epsilon: 0.1
+
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      +kernel: linear,poly,rbf
+      +degree: 1,2,3
+      +gamma: scale,auto
+      +C: 0.5,1.0,1.5
+      +epsilon: 0.1,0.2,0.3
+
+mlflow:
+  runname: "SVR"
